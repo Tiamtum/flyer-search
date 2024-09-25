@@ -129,7 +129,6 @@ function buildHTML(data)
     });   
 }
 
-
 const fetch_data_button = document.querySelector("#fetch-data");
 fetch_data_button.addEventListener("click",()=>{
     get_data();
