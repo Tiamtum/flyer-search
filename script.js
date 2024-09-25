@@ -111,7 +111,6 @@ function buildHTML(data)
         row.appendChild(price);
         to_table.appendChild(row);
     };
-    console.log(`DATA===========${data}`)
     const [sobeys, dominion, walmart] = data;
     const dominion_table = document.querySelector("#dominion-data");
     const walmart_table = document.querySelector("#walmart-data");
