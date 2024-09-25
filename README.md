@@ -1,3 +1,3 @@
 # flyer-search
 
-[Search through flyers]([https://pip.pypa.io/en/stable/](https://tiamtum.github.io/flyer-search/)) 
+[Search through flyers](https://tiamtum.github.io/flyer-search/)
