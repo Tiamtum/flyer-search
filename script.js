@@ -1,7 +1,7 @@
 //note: payload changes every flyer release
 const store = {
     "walmart": {
-        "payload":"973509/6814397/b1ba8eb3c50f0e1f10ab6181af23bcc1ff3bc8587aaa782204cdc2c052e57c77", 
+        "payload":"973510/6828455/e8ad3f67a891cc32628087a7b2c53b56e0e2c313ed81018093c836986ca3f9f5", 
         "merchant_id": "234"
     },
     "sobeys":{
