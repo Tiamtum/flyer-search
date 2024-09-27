@@ -176,12 +176,20 @@ fetch_data_button.addEventListener("click",()=>{
     const input = document.createElement("input");
     input.placeholder="search"
     input.classList.add("mx-2");
-    const button = document.createElement("button");
-    button.type = "button";
-    button.classList.add("btn","btn-success","mx-2");
-    button.textContent="Submit";
+    const search_button = document.createElement("button");
+    search_button.type = "button";
+    search_button.classList.add("btn","btn-success","mx-2");
+    search_button.textContent="Submit";
+
+    const reset_button = document.createElement("button");
+    reset_button.type = "button";
+    reset_button.classList.add("btn","btn-warning","mx-2");
+    reset_button.id = "reset-data"
+    reset_button.textContent="Reset";
+
     search_container.appendChild(input);
-    search_container.appendChild(button);
+    search_container.appendChild(search_button);
+    search_container.appendChild(reset_button);
     fetch_data_button.replaceWith(search_container);
     const search_data = () => {
         const dominion_table = document.querySelector("#dominion-data");
@@ -211,7 +219,7 @@ fetch_data_button.addEventListener("click",()=>{
         tables.forEach(table => flag_products(table));
         document.querySelectorAll(".to-remove").forEach(child => child.remove());        
     }
-    button.addEventListener("click",()=>{
+    search_button.addEventListener("click",()=>{
         search_data();
     });
     input.addEventListener("keypress",(evt)=>{
@@ -220,9 +228,8 @@ fetch_data_button.addEventListener("click",()=>{
             search_data();            
         }
     });
-});
-
-document.querySelector("#reset-data").addEventListener("click",()=>{
-    document.querySelectorAll("tbody tr").forEach(row=>row.remove());
-    buildHTML(local_copy);
+    reset_button.addEventListener("click",()=>{
+        document.querySelectorAll("tbody tr").forEach(row=>row.remove());
+        buildHTML(local_copy);
+    });
 });
