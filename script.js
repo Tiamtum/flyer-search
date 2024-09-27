@@ -19,15 +19,18 @@ const store = {
 }
 
 const local_copy = [];
+let date_exists = false;
 
-async function scrape_data(store) {
-    const url = `https://cdn-gateflipp.flippback.com/storefront-payload/${store.payload}?merchant_id=${store.merchant_id}`;
+async function scrape_data(store_instance) {
+    const url = `https://cdn-gateflipp.flippback.com/storefront-payload/${store_instance.payload}?merchant_id=${store_instance.merchant_id}`;
     const products = [];
     await fetch(url)
         .then(response => response.text())
         .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
         .then(raw_data => 
         {
+            const date = raw_data.children[0].attributes.getNamedItem("subtitle").textContent;
+            store_instance.date = date;
             const unformatted_text = [];
             let substring = "";
             for (char of raw_data.children[0].outerHTML)
@@ -101,7 +104,7 @@ async function get_data(){
 
 function buildHTML(data)
 {
-    const assemble = (to_table,data) =>{
+    const build_table = (to_table, data) =>{
         const name = document.createElement("td");
         if(data.name === "")
         {
@@ -118,35 +121,58 @@ function buildHTML(data)
         row.appendChild(price);
         to_table.appendChild(row);
     };
+
+    const add_date = (flyer_date_container,flyer_date) =>{
+        const text_container = document.createElement("p");
+        const text = document.createTextNode(flyer_date);
+        text_container.appendChild(text);
+        flyer_date_container.appendChild(text_container);
+    }
+
     const [sobeys, dominion, walmart,shoppers] = data;
+
     const dominion_table = document.querySelector("#dominion-data");
+    const dominion_title = document.querySelector("#dominion-title");
+
     const walmart_table = document.querySelector("#walmart-data");
+    const walmart_title = document.querySelector("#walmart-title");
+
     const sobeys_table = document.querySelector("#sobeys-data");
+    const sobeys_title = document.querySelector("#sobeys-title");
+
     const shoppers_table = document.querySelector("#shoppers-data");
+    const shoppers_title = document.querySelector("#shoppers-title");
+
 
 
     dominion.forEach(product =>{
-        assemble(dominion_table,product);
+        build_table(dominion_table,product);
     });
+    if(!date_exists) add_date(dominion_title,store.dominion.date);
 
     walmart.forEach(product =>{
-        assemble(walmart_table,product);
+        build_table(walmart_table, product);
     });
+    if(!date_exists) add_date(walmart_title,store.walmart.date);
 
     sobeys.forEach(product =>{
-        assemble(sobeys_table,product);
+        build_table(sobeys_table, product);
     });   
+    if(!date_exists) add_date(sobeys_title,store.sobeys.date);
 
     shoppers.forEach(product =>{
-        assemble(shoppers_table,product);
+        build_table(shoppers_table, product);
     });   
+    if(!date_exists) add_date(shoppers_title,store.shoppers.date);
+
+    date_exists = true;
 }
 
 const fetch_data_button = document.querySelector("#fetch-data");
 fetch_data_button.addEventListener("click",()=>{
     get_data();
     const search_container = document.createElement("div");
-    search_container.classList.add("my-3");
+    search_container.classList.add("my-2");
     const input = document.createElement("input");
     input.placeholder="search"
     input.classList.add("mx-2");
@@ -173,7 +199,10 @@ fetch_data_button.addEventListener("click",()=>{
                 {
                     child.classList.add("to-remove");
                 }
-                if(table_text_content.includes(user_input) && table_text_content[table_text_content.indexOf(user_input)-1] !== " ") //why " " works but others didn't puzzles me
+                if( //included as substring, is contained within a word, is not the first word of the string
+                table_text_content.includes(user_input) && 
+                table_text_content[table_text_content.indexOf(user_input)-1] !== " " && 
+                table_text_content.indexOf(user_input) !== 0) 
                 {
                     child.classList.add("to-remove");
                 }
