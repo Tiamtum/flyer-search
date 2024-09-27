@@ -11,6 +11,10 @@ const store = {
     "dominion":{
         "payload":"957009/6839096/9a07ad8353c3cc2e1f47aee32b3124dd47b18641ae3501714fe1fcb6f3615a9e", 
         "merchant_id": "2334"            
+    },
+    "shoppers":{
+        "payload":"953277/6808871/ce122d0a035fdff1c2582505f7c2b50dc8121ae89c2fae1bd2a4ed46fd4b7bb1", 
+        "merchant_id": "208"          
     }
 }
 
@@ -83,7 +87,10 @@ async function scrape_data(store) {
 }
 async function get_data(){
     try{
-        await Promise.all([scrape_data(store.sobeys),scrape_data(store.dominion),scrape_data(store.walmart)]).then(data=> {
+        await Promise.all([scrape_data(store.sobeys),
+            scrape_data(store.dominion),
+            scrape_data(store.walmart),
+            scrape_data(store.shoppers)]).then(data=> {
             local_copy.push(...data);
             buildHTML(data);
         });
@@ -111,10 +118,12 @@ function buildHTML(data)
         row.appendChild(price);
         to_table.appendChild(row);
     };
-    const [sobeys, dominion, walmart] = data;
+    const [sobeys, dominion, walmart,shoppers] = data;
     const dominion_table = document.querySelector("#dominion-data");
     const walmart_table = document.querySelector("#walmart-data");
     const sobeys_table = document.querySelector("#sobeys-data");
+    const shoppers_table = document.querySelector("#shoppers-data");
+
 
     dominion.forEach(product =>{
         assemble(dominion_table,product);
@@ -127,15 +136,17 @@ function buildHTML(data)
     sobeys.forEach(product =>{
         assemble(sobeys_table,product);
     });   
+
+    shoppers.forEach(product =>{
+        assemble(shoppers_table,product);
+    });   
 }
 
 const fetch_data_button = document.querySelector("#fetch-data");
 fetch_data_button.addEventListener("click",()=>{
     get_data();
-    
     const search_container = document.createElement("div");
     search_container.classList.add("my-3");
-
     const input = document.createElement("input");
     input.placeholder="search"
     input.classList.add("mx-2");
@@ -143,33 +154,44 @@ fetch_data_button.addEventListener("click",()=>{
     button.type = "button";
     button.classList.add("btn","btn-success","mx-2");
     button.textContent="Submit";
-
     search_container.appendChild(input);
     search_container.appendChild(button);
-
     fetch_data_button.replaceWith(search_container);
-   
-   
-    button.addEventListener("click",()=>{
+    const search_data = () => {
         const dominion_table = document.querySelector("#dominion-data");
         const walmart_table = document.querySelector("#walmart-data");
         const sobeys_table = document.querySelector("#sobeys-data");
-        const tables = [dominion_table,walmart_table,sobeys_table];
+        const shoppers_table = document.querySelector("#shoppers-data");
+
+        const tables = [dominion_table,walmart_table,sobeys_table,shoppers_table];
 
         const flag_products = table => {
             Array.from(table.children).forEach(child=>{
-                if(!child.textContent.toLowerCase().includes(input.value.toLowerCase()))
+                const table_text_content = child.textContent.toLowerCase();
+                const user_input = input.value.toLowerCase();
+                if(!table_text_content.includes(user_input))
                 {
                     child.classList.add("to-remove");
-                }                
+                }
+                if(table_text_content.includes(user_input) && table_text_content[table_text_content.indexOf(user_input)-1] !== " ") //why " " works but others didn't puzzles me
+                {
+                    child.classList.add("to-remove");
+                }
             })
         }
-
         tables.forEach(table => flag_products(table));
-
-        document.querySelectorAll(".to-remove").forEach(child => child.remove());
+        document.querySelectorAll(".to-remove").forEach(child => child.remove());        
+    }
+    button.addEventListener("click",()=>{
+        search_data();
     });
-})
+    input.addEventListener("keypress",(evt)=>{
+        if(evt.key === "Enter")
+        {
+            search_data();            
+        }
+    });
+});
 
 document.querySelector("#reset-data").addEventListener("click",()=>{
     document.querySelectorAll("tbody tr").forEach(row=>row.remove());
