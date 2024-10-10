@@ -1,19 +1,19 @@
 //note: payload changes every flyer release
 const store = {
     "walmart": {
-        "payload":"973511/6858601/dc0450ab94650cc5b5ad85304457bf3218dde1c8f5a3cd7c544ff28b616c0f98", 
+        "payload":"973512/6867123/77fae37f716eecb7072aac76e403654cc2285868a0b24480fe1e0b31b3ec580d", 
         "merchant_id": "234"
     },
     "sobeys":{
-        "payload":"963932/6849560/ba9fe6c4e569c8c4263762f460f2adc5585848e1f6b171e066ea7142ba73d5fa", 
+        "payload":"963931/6863056/854e3625b7a83552056a026af04c2d95b76a9ad7221ec445d87d0323a0ed7f7d", 
         "merchant_id": "2072"        
     },
     "dominion":{
-        "payload":"957010/6853658/c8f9464146cd1948eef74316708834979a9de1b0ea535998c53bb2c79766cb0f", 
+        "payload":"957011/6867072/0d78d28bee3d58091a7bbd4fc24ed8de4eb5951ef5c6083763ac3d4c0e69d3cb", 
         "merchant_id": "2334"            
     },
     "shoppers":{
-        "payload":"953278/6853481/ffb50fcb7f8e2877ff5f934946b9992b0760f076ae4492e5f05fa940f3baffc4", 
+        "payload":"953279/6867418/f82423713ddae43f0358909079ad17c7813e5cabc4d7e64a4fc5cec1852deb68", 
         "merchant_id": "208"          
     }
 }
