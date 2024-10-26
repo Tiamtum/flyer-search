@@ -1,0 +1,18 @@
+.empty{
+    background-color: darkgray !important;
+}
+img[src="caution-sign.png"]{
+    display:inline;
+    height:50px;
+    width: auto;
+    margin-left: 0.5rem;
+}
+#caution{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+}
+#caution p{
+    padding-top:15px;
+    margin-left: 0.5rem;
+}
